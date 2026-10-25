@@ -1,12 +1,20 @@
 import logo from "../assets/GloboLogo.png";
+import { logo as logoClass } from "./Banner.module.css";
 
+const subtitleStyle = {
+  fontStyle: "italic",
+  fontSize: "xx-large",
+  color: "coral",
+};
 const Banner = () => {
   return (
-    <header>
-      <div>
-        <img src={logo} alt="logo" width="1000" height="1000" />
+    <header className="row mb-4">
+      <div className="col-5">
+        <img src={logo} alt="logo" className={logoClass} />
       </div>
-      <div>Providing houses all over the world!</div>
+      <div className="col-7 mt-12" style={subtitleStyle}>
+        Providing houses all over the world!
+      </div>
     </header>
   );
 };
