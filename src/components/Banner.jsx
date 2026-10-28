@@ -6,14 +6,14 @@ const subtitleStyle = {
   fontSize: "xx-large",
   color: "coral",
 };
-const Banner = () => {
+const Banner = ({ headerText }) => {
   return (
     <header className="row mb-4">
       <div className="col-5">
         <img src={logo} alt="logo" className={logoClass} />
       </div>
       <div className="col-7 mt-12" style={subtitleStyle}>
-        Providing houses all over the world!
+        {headerText}
       </div>
     </header>
   );
