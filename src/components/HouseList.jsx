@@ -1,23 +1,34 @@
 import HouseRow from "./HouseRow";
-import { useState } from "react";
-const houseArray = [
-  {
-    id: 1,
-    address: "12 Valley of Kings, Geneva",
-    country: "Switzerland",
-    price: 900000,
-  },
-  {
-    id: 2,
-    address: "89 Road of Forks, Bern",
-    country: "Switzerland",
-    price: 500000,
-  },
-];
+import { useEffect, useState } from "react";
+// const houseArray = [
+//   {
+//     id: 1,
+//     address: "12 Valley of Kings, Geneva",
+//     country: "Switzerland",
+//     price: 900000,
+//   },
+//   {
+//     id: 2,
+//     address: "89 Road of Forks, Bern",
+//     country: "Switzerland",
+//     price: 500000,
+//   },
+// ];
 
 export const HouseList = () => {
-  const [houses, setHouses] = useState(houseArray);
+  const [houses, setHouses] = useState([]);
   //houses is readonly here. change only using set funciton
+
+  useEffect(() => {
+    //ideally no need to write fetchHouses method,
+    //but the initial function inside the useEffect can't be async.
+    const fetchHouses = async () => {
+      const response = await fetch("http://localhost:5000/house"); //fetch is async.
+      const houses = await response.json();
+      setHouses(houses);
+    };
+    fetchHouses();
+  },);
   const addHouse = () => {
     setHouses([
       ...houses,
