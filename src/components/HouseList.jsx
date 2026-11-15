@@ -1,5 +1,8 @@
+import useHouses from "../hooks/useHouses";
 import HouseRow from "./HouseRow";
-import { useEffect, useState } from "react";
+import LoadingIndicator from "./LoadingIndicator";
+import loadingStatus from "../helpers/loadingStatus";
+import ErrorBoundary from "./ErrorBoundary";
 // const houseArray = [
 //   {
 //     id: 1,
@@ -15,20 +18,12 @@ import { useEffect, useState } from "react";
 //   },
 // ];
 
-export const HouseList = () => {
-  const [houses, setHouses] = useState([]);
-  //houses is readonly here. change only using set funciton
+const HouseList = ({ selectHouse }) => {
+  const { houses, setHouses, loadingState } = useHouses();
 
-  useEffect(() => {
-    //ideally no need to write fetchHouses method,
-    //but the initial function inside the useEffect can't be async.
-    const fetchHouses = async () => {
-      const response = await fetch("http://localhost:5000/house"); //fetch is async.
-      const houses = await response.json();
-      setHouses(houses);
-    };
-    fetchHouses();
-  },);
+  if (loadingState !== loadingStatus.loaded) {
+    return <LoadingIndicator loadingState={loadingState} />;
+  }
   const addHouse = () => {
     setHouses([
       ...houses,
@@ -56,9 +51,11 @@ export const HouseList = () => {
           </tr>
         </thead>
         <tbody>
-          {houses.map((h) => (
-            <HouseRow house={h} key={h.id} />
-          ))}
+          <ErrorBoundary fallback="Error loading house rows!">
+            {houses.map((h) => (
+              <HouseRow house={h} selectHouse={selectHouse} key={h.id} />
+            ))}
+          </ErrorBoundary>
         </tbody>
       </table>
       <button onClick={addHouse} className="btn btn-primary">
@@ -67,3 +64,5 @@ export const HouseList = () => {
     </>
   );
 };
+
+export default HouseList;
